@@ -1,6 +1,6 @@
 import { formatDate } from "@/lib/dates";
 
-export default function Card({ article, lang = "en", onOpen }) {
+export default function Card({ article, lang = "en", onOpen, translatedTitle }) {
   const { title, description, source, author, publishedAt, urlToImage } = article;
 
   return (
@@ -12,7 +12,7 @@ export default function Card({ article, lang = "en", onOpen }) {
         {source} {author ? `· ${author}` : ""}
       </p>
       <h2 className="font-serif font-bold text-lg leading-snug mb-1">
-        {title}
+        {translatedTitle || title}
       </h2>
       {description && (
         <p className="font-sans text-sm text-muted leading-relaxed line-clamp-2">

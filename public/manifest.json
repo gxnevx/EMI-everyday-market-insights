@@ -1,7 +1,7 @@
 {
   "name": "EMI — Everyday Market Insights",
   "short_name": "EMI",
-  "start_url": "/news",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#F5F3E8",
   "theme_color": "#F5F3E8",
