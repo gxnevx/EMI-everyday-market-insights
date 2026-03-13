@@ -1,21 +1,12 @@
 import { formatDate } from "@/lib/dates";
 
-export default function Card({ article, lang = "en" }) {
-  const { title, description, source, author, publishedAt, urlToImage, url } = article;
+export default function Card({ article, lang = "en", onOpen }) {
+  const { title, description, source, author, publishedAt, urlToImage } = article;
 
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block py-5 border-b border-divider"
-    >
+    <div onClick={onOpen} className="py-5 border-b border-divider cursor-pointer">
       {urlToImage && (
-        <img
-          src={urlToImage}
-          alt=""
-          className="w-full h-44 object-cover mb-3"
-        />
+        <img src={urlToImage} alt="" className="w-full h-44 object-cover mb-3" />
       )}
       <p className="text-xs font-sans text-muted uppercase tracking-wide mb-1">
         {source} {author ? `· ${author}` : ""}
@@ -31,6 +22,6 @@ export default function Card({ article, lang = "en" }) {
       <p className="text-xs text-muted mt-2 font-sans">
         {formatDate(publishedAt, lang)}
       </p>
-    </a>
+    </div>
   );
 }

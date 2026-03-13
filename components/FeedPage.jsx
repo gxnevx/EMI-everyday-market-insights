@@ -1,12 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import Card from "./Card";
+import ArticleView from "./ArticleView";
 import { LABELS } from "@/lib/constants";
 
 export default function FeedPage({ endpoint, section }) {
   const [articles, setArticles] = useState([]);
   const [lang, setLang] = useState("en");
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     fetch(endpoint)
@@ -17,7 +19,16 @@ export default function FeedPage({ endpoint, section }) {
   }, [endpoint]);
 
   const t = LABELS[lang];
-  const other = section === "news" ? "insights" : "news";
+
+  if (selected) {
+    return (
+      <ArticleView
+        article={selected}
+        lang={lang}
+        onBack={() => { setSelected(null); window.scrollTo(0, 0); }}
+      />
+    );
+  }
 
   return (
     <div className="max-w-lg mx-auto min-h-screen bg-cream">
@@ -44,7 +55,9 @@ export default function FeedPage({ endpoint, section }) {
           <p className="text-sm text-muted py-8 text-center font-sans">{t.noArticles}</p>
         )}
 
-        {articles.map((a, i) => <Card key={i} article={a} lang={lang} />)}
+        {articles.map((a, i) => (
+          <Card key={i} article={a} lang={lang} onOpen={() => { setSelected(a); window.scrollTo(0, 0); }} />
+        ))}
       </main>
     </div>
   );
