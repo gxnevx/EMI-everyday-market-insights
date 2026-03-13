@@ -44,11 +44,12 @@ export default function Home() {
 
   const goBack = () => { setSelected(null); setTab(savedTab.current); window.scrollTo(0, 0); };
   const sw = useSwipe(() => !selected && setTab((t) => Math.min(t + 1, 1)), () => !selected && setTab((t) => Math.max(t - 1, 0)));
+  const backSw = useSwipe(() => {}, goBack);
   const filtered = section === "news" ? applyFilter(data.news, filters) : data.insights;
   const onTS = (e) => { sw.onTouchStart?.(e); pull.onTouchStart(e); };
   const onTE = (e) => { sw.onTouchEnd?.(e); pull.onTouchEnd(e); };
 
-  if (selected) return <div {...useSwipe(() => {}, goBack)}><ArticleView article={selected} lang={lang} onBack={goBack} /></div>;
+  if (selected) return <div {...backSw}><ArticleView article={selected} lang={lang} onBack={goBack} /></div>;
 
   return (
     <div className="max-w-lg mx-auto min-h-screen bg-cream" onTouchStart={onTS} onTouchMove={pull.onTouchMove} onTouchEnd={onTE}>
