@@ -78,7 +78,7 @@ export default function Home() {
             onOpen={() => { savedTab.current = tab; setSelected(a); window.scrollTo(0, 0); }} />
         ))}
       </main>
-      <p className="text-center text-xs text-muted font-sans py-3 border-t border-divider">{refs}/100 {lang === "pt" ? "atualizações hoje" : "refreshes today"}</p>
+      <p className="text-center text-xs text-muted font-sans py-3 border-t border-divider">{refs}/1000 {lang === "pt" ? "atualizações hoje" : "refreshes today"}</p>
     </div>
   );
 }
