@@ -8,6 +8,7 @@ import { CATEGORIES } from "@/lib/keywords";
 import { useSwipe } from "@/lib/useSwipe";
 import { applyFilter, batchTranslate } from "@/lib/helpers";
 import { useRefreshCounter } from "@/lib/useRefreshCounter";
+import { useDarkMode } from "@/lib/useDarkMode";
 
 const TABS = ["news", "insights"];
 const ENDPOINTS = { news: "/api/fetch-news", insights: "/api/fetch-insights" };
@@ -18,8 +19,8 @@ export default function Home() {
   const [data, setData] = useState({ news: [], insights: [] }), [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null), [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState(ALL_CATS), [trMap, setTrMap] = useState({});
-  const savedTab = useRef(0);
-  const { count: refreshes, increment: incRefresh } = useRefreshCounter();
+  const savedTab = useRef(0), { count: refreshes, increment: incRefresh } = useRefreshCounter();
+  const { dark, toggle: toggleDark } = useDarkMode();
   const [section, t] = [TABS[tab], LABELS[lang]];
 
   const fetchData = useCallback(async () => {
@@ -28,9 +29,7 @@ export default function Home() {
       fetch(ENDPOINTS.news).then((r) => r.json()).catch(() => ({ articles: [] })),
       fetch(ENDPOINTS.insights).then((r) => r.json()).catch(() => ({ articles: [] })),
     ]);
-    setData({ news: news.articles || [], insights: insights.articles || [] });
-    incRefresh();
-    setLoading(false);
+    setData({ news: news.articles || [], insights: insights.articles || [] }); incRefresh(); setLoading(false);
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
@@ -64,6 +63,7 @@ export default function Home() {
           ))}
         </div>
         <div className="flex gap-4 items-center">
+          <button onClick={toggleDark} className="font-sans text-xs font-medium text-ink tracking-wide">{dark ? "☀" : "☾"}</button>
           <button onClick={() => setShowFilter((f) => !f)} className="font-sans text-xs font-medium text-ink tracking-wide uppercase">
             {showFilter ? "Close" : "Filter"}
           </button>

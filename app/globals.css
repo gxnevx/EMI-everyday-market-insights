@@ -9,18 +9,22 @@ body {
   color: #1A1A1A;
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Smooth page transitions */
-.slide-enter { animation: slideIn 0.25s ease-out; }
-.slide-exit { animation: slideOut 0.2s ease-in; }
-.slide-left { animation: slideFromRight 0.25s ease-out; }
-.slide-right { animation: slideFromLeft 0.25s ease-out; }
+body.dark {
+  background-color: #141414;
+  color: #E8E6DB;
+}
 
-@keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideOut { from { opacity: 1; } to { opacity: 0; } }
-@keyframes slideFromRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes slideFromLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+.dark .bg-cream { background-color: #141414; }
+.dark .text-ink { color: #E8E6DB; }
+.dark .text-muted { color: #7A7A6E; }
+.dark .border-divider { border-color: #2A2A2A; }
+.dark .bg-ink { background-color: #E8E6DB; }
+.dark .bg-ink.text-cream { color: #141414; }
+.dark .border-ink { border-color: #E8E6DB; }
+.dark .text-red-700 { color: #f87171; }
+.dark .text-yellow-700 { color: #fbbf24; }
 
-/* Fast tap response */
 button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
