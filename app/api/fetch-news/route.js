@@ -2,9 +2,14 @@ import { calculateScore } from "@/lib/score";
 
 const API_KEY = process.env.NEWS_API_KEY || "";
 const BASE = "https://newsapi.org/v2/everything";
-const QUERY = "(artificial intelligence OR AI startup OR generative AI OR LLM OR OpenAI OR Anthropic OR DeepMind OR AI funding OR AI launch)";
 
-export const revalidate = 900; // 15 min cache
+// Tight query: must mention specific AI terms, not just "AI"
+const QUERY = '("artificial intelligence" OR "generative AI" OR ChatGPT OR OpenAI OR Anthropic OR "large language model" OR LLM OR GPT OR "AI startup" OR "AI model" OR "machine learning" OR DeepMind OR Gemini OR "AI agent")';
+
+// Only quality tech/business sources
+const DOMAINS = "techcrunch.com,theverge.com,wired.com,arstechnica.com,technologyreview.com,reuters.com,bloomberg.com,cnbc.com,nytimes.com,wsj.com,ft.com,axios.com,venturebeat.com,semafor.com,theinformation.com";
+
+export const revalidate = 1800; // 30 min cache to save API calls
 
 export async function GET() {
   if (!API_KEY) {
@@ -13,6 +18,7 @@ export async function GET() {
 
   const params = new URLSearchParams({
     q: QUERY,
+    domains: DOMAINS,
     sortBy: "publishedAt",
     pageSize: "30",
     language: "en",

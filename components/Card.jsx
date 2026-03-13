@@ -5,9 +5,6 @@ export default function Card({ article, lang = "en", onOpen, translatedTitle }) 
 
   return (
     <div onClick={onOpen} className="py-5 border-b border-divider cursor-pointer">
-      {urlToImage && (
-        <img src={urlToImage} alt="" className="w-full h-44 object-cover mb-3" />
-      )}
       <p className="text-xs font-sans text-muted uppercase tracking-wide mb-1">
         {source} {author ? `· ${author}` : ""}
       </p>
