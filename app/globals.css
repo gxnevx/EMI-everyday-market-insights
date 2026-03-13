@@ -28,3 +28,14 @@ body.dark {
 .dark .text-yellow-700 { color: #fbbf24; }
 
 button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+
+.pull-spinner {
+  width: 20px; height: 20px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
