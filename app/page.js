@@ -50,12 +50,9 @@ export default function Home() {
   const tabSwipe = useSwipe(() => !selected && setTab((t) => Math.min(t + 1, 1)), () => !selected && setTab((t) => Math.max(t - 1, 0)));
   const articleSwipe = useSwipe(() => {}, goBack);
   const filtered = section === "news" ? applyFilter(data.news, filters) : data.insights;
+  const animClass = tabSwipe.swipeDir === "left" ? "slide-left" : tabSwipe.swipeDir === "right" ? "slide-right" : "slide-enter";
 
-  if (selected) return (
-    <div {...articleSwipe}>
-      <ArticleView article={selected} lang={lang} onBack={goBack} />
-    </div>
-  );
+  if (selected) return <div {...articleSwipe} className="slide-enter"><ArticleView article={selected} lang={lang} onBack={goBack} /></div>;
 
   return (
     <div className="max-w-lg mx-auto min-h-screen bg-cream" {...tabSwipe}>
@@ -63,16 +60,20 @@ export default function Home() {
         <div className="flex gap-6">
           {TABS.map((s, i) => (
             <button key={s} onClick={() => setTab(i)}
-              className={`font-serif text-lg ${tab === i ? "font-bold text-ink" : "text-muted"}`}>{t[s]}</button>
+              className={`font-serif text-lg transition-colors ${tab === i ? "font-bold text-ink" : "text-muted"}`}>{t[s]}</button>
           ))}
         </div>
-        <div className="flex gap-3 items-center">
-          <button onClick={() => setShowFilter((f) => !f)} className="text-sm text-muted font-sans">{showFilter ? "✕" : "⚙"}</button>
-          <button onClick={() => setLang((l) => l === "en" ? "pt" : "en")} className="text-sm text-muted font-sans">{lang === "en" ? "PT" : "EN"}</button>
+        <div className="flex gap-4 items-center">
+          <button onClick={() => setShowFilter((f) => !f)} className="font-sans text-xs font-medium text-ink tracking-wide uppercase">
+            {showFilter ? "Close" : "Filter"}
+          </button>
+          <button onClick={() => setLang((l) => l === "en" ? "pt" : "en")} className="font-sans text-xs font-medium text-ink tracking-wide uppercase">
+            {lang === "en" ? "PT" : "EN"}
+          </button>
         </div>
       </nav>
       {showFilter && <FilterPanel active={filters} onToggle={(c) => setFilters((f) => f.includes(c) ? f.filter((x) => x !== c) : [...f, c])} lang={lang} onClose={() => setShowFilter(false)} />}
-      <main className="px-5">
+      <main className={`px-5 ${animClass}`} key={section}>
         <h1 className="font-serif font-bold text-2xl mt-6 mb-1">{t.today}</h1>
         <p className="text-sm text-muted font-sans mb-4">{t[section]}</p>
         {loading && <p className="text-sm text-muted py-8 text-center font-sans">Loading...</p>}
