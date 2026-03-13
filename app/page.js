@@ -7,23 +7,20 @@ import { LABELS } from "@/lib/constants";
 import { CATEGORIES } from "@/lib/keywords";
 import { useSwipe } from "@/lib/useSwipe";
 import { applyFilter, batchTranslate } from "@/lib/helpers";
+import { useRefreshCounter } from "@/lib/useRefreshCounter";
 
 const TABS = ["news", "insights"];
 const ENDPOINTS = { news: "/api/fetch-news", insights: "/api/fetch-insights" };
 const ALL_CATS = Object.keys(CATEGORIES);
 
 export default function Home() {
-  const [tab, setTab] = useState(0);
-  const [lang, setLang] = useState("en");
-  const [data, setData] = useState({ news: [], insights: [] });
-  const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(null);
-  const [showFilter, setShowFilter] = useState(false);
-  const [filters, setFilters] = useState(ALL_CATS);
-  const [trMap, setTrMap] = useState({});
+  const [tab, setTab] = useState(0), [lang, setLang] = useState("en");
+  const [data, setData] = useState({ news: [], insights: [] }), [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(null), [showFilter, setShowFilter] = useState(false);
+  const [filters, setFilters] = useState(ALL_CATS), [trMap, setTrMap] = useState({});
   const savedTab = useRef(0);
-  const section = TABS[tab];
-  const t = LABELS[lang];
+  const { count: refreshes, increment: incRefresh } = useRefreshCounter();
+  const [section, t] = [TABS[tab], LABELS[lang]];
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -32,6 +29,7 @@ export default function Home() {
       fetch(ENDPOINTS.insights).then((r) => r.json()).catch(() => ({ articles: [] })),
     ]);
     setData({ news: news.articles || [], insights: insights.articles || [] });
+    incRefresh();
     setLoading(false);
   }, []);
 
@@ -84,6 +82,7 @@ export default function Home() {
             onOpen={() => { savedTab.current = tab; setSelected(a); window.scrollTo(0, 0); }} />
         ))}
       </main>
+      <p className="text-center text-xs text-muted font-sans py-3 border-t border-divider">{refreshes}/100 {lang === "pt" ? "atualizações hoje" : "refreshes today"}</p>
     </div>
   );
 }
