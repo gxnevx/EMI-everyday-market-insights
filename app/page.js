@@ -63,7 +63,7 @@ export default function Home() {
           ))}
         </div>
         <div className="flex gap-4 items-center">
-          <button onClick={toggleDark} className="font-sans text-xs font-medium text-ink tracking-wide">{dark ? "☀" : "☾"}</button>
+          <button onClick={toggleDark} className="font-sans text-xs font-medium text-ink tracking-wide uppercase">{dark ? "Light" : "Dark"}</button>
           <button onClick={() => setShowFilter((f) => !f)} className="font-sans text-xs font-medium text-ink tracking-wide uppercase">
             {showFilter ? "Close" : "Filter"}
           </button>
